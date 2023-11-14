@@ -17,13 +17,13 @@ use uuid::Uuid;
 pub async fn create(
     auth_session: WXAuthSession,
     State(pool): State<Pool>,
-    Json(mut new_orderparams): Json<NewOrderParams>,
+    Json(mut new_order_params): Json<NewOrderParams>,
 ) -> Result<Json<()>, (StatusCode, String)> {
     match auth_session.user {
         Some(user) => {
             let mut conn = pool.get().await.map_err(internal_error)?;
 
-            let total_cost = new_orderparams
+            let total_cost = new_order_params
                 .details
                 .iter()
                 .fold(0.0, |mut init, detail| {
@@ -33,10 +33,10 @@ pub async fn create(
 
             let new_order = NewOrder {
                 uuid: Uuid::new_v4().to_string(),
-                restaurant_id: new_orderparams.restaurant_id,
+                restaurant_id: new_order_params.restaurant_id,
                 user_id: -1,
                 wx_open_id: user.id,
-                qrcode_location_id: new_orderparams.qrcode_location_id,
+                qrcode_location_id: new_order_params.qrcode_location_id,
                 state: "NO".to_string(),
                 total_cost,
             };
@@ -54,18 +54,17 @@ pub async fn create(
                             .get_result::<i32>(&mut conn)
                             .await?;
 
-                        new_orderparams.details.iter_mut().for_each(|detail| {
+                        new_order_params.details.iter_mut().for_each(|detail| {
                             detail.order_id = order_id_v;
                         });
 
-                        let new_order_details =
-                            new_orderparams
-                                .details
-                                .into_iter()
-                                .fold(vec![], |mut init, detail| {
-                                    init.push(detail);
-                                    init
-                                });
+                        let new_order_details = new_order_params.details.into_iter().fold(
+                            vec![],
+                            |mut init, detail| {
+                                init.push(detail);
+                                init
+                            },
+                        );
 
                         diesel::insert_into(orders_details)
                             .values(&new_order_details)

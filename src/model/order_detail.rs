@@ -8,11 +8,10 @@ use serde::{Deserialize, Serialize};
 pub struct OrderDetail {
     pub id: i32,
     pub order_id: i32,
-    pub good_id: i32,
     pub count: i32,
-    pub price: f64,
     pub goods_name: String,
     pub info: String,
+    pub price: f64,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
@@ -20,7 +19,6 @@ pub struct OrderDetail {
 #[derive(Deserialize, Insertable, AsChangeset)]
 #[diesel(table_name = crate::schema::orders_details)]
 pub struct NewOrderDetail {
-    pub good_id: i32,
     #[serde(skip_deserializing)]
     pub order_id: i32,
     pub count: i32,

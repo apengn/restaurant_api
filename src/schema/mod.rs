@@ -47,13 +47,10 @@ diesel::table! {
     orders_details (id) {
         id -> Int4,
         order_id -> Int4,
-        good_id -> Int4,
-        user_id -> Int4,
-        wx_open_id -> Int4,
-        count -> Nullable<Int4>,
+        count -> Int4,
+        goods_name -> Text,
         info -> Text,
         price -> Float8,
-        goods_name -> Text,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }
@@ -124,10 +121,7 @@ diesel::joinable!(orders -> qrcode_location (qrcode_location_id));
 diesel::joinable!(orders -> restaurants (restaurant_id));
 diesel::joinable!(orders -> users (user_id));
 diesel::joinable!(orders -> wx_openid (wx_open_id));
-diesel::joinable!(orders_details -> goods (good_id));
 diesel::joinable!(orders_details -> orders (order_id));
-diesel::joinable!(orders_details -> users (user_id));
-diesel::joinable!(orders_details -> wx_openid (wx_open_id));
 diesel::joinable!(qrcode_location -> restaurants (restaurant_id));
 
 diesel::allow_tables_to_appear_in_same_query!(

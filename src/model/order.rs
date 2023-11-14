@@ -2,7 +2,7 @@ use chrono::NaiveDateTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::model::order_detail::NewOrderDetail;
+use crate::model::order_detail::{NewOrderDetail, OrderDetail};
 
 #[derive(Debug, Deserialize, Serialize, Clone, Queryable)]
 #[diesel(table_name = crate::schema::orders)]
@@ -43,7 +43,21 @@ pub struct NewOrderParams {
     #[serde(skip_deserializing)]
     pub wx_open_id: i32,
     pub qrcode_location_id: i32,
-    pub state: String,
+    pub state: String, // 0 已下单，1 制作中，2 已买单
     pub total_cost: f64,
     pub details: Vec<NewOrderDetail>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct OrderParamsResponse {
+    pub uuid: String,
+    pub restaurant_id: i32,
+    #[serde(skip_deserializing)]
+    pub user_id: i32,
+    #[serde(skip_deserializing)]
+    pub wx_open_id: i32,
+    pub qrcode_location_id: i32,
+    pub state: String,
+    pub total_cost: f64,
+    pub details: Vec<OrderDetail>,
 }
