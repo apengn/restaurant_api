@@ -31,7 +31,7 @@ pub async fn list(
             use schema::orders::dsl::{created_at, orders, restaurant_id, state as order_state};
             let orders_v = orders
                 .filter(restaurant_id.eq(user.id))
-                .filter(order_state.eq(state.unwrap().0))
+                .filter(order_state.eq(state.as_ref().unwrap().0))
                 .limit(pagination.page_size)
                 .offset(pagination.offset())
                 .order(created_at.desc())

@@ -14,7 +14,7 @@ pub struct Order {
     pub user_id: i32,
     pub wx_open_id: i32,
     pub qrcode_location_id: i32,
-    pub state: String,
+    pub state: i32,
     pub total_cost: f64,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
@@ -30,7 +30,7 @@ pub struct NewOrder {
     #[serde(skip_deserializing)]
     pub wx_open_id: i32,
     pub qrcode_location_id: i32,
-    pub state: String,
+    pub state: i32,
     pub total_cost: f64,
 }
 
@@ -57,7 +57,7 @@ pub struct OrderParamsResponse {
     #[serde(skip_deserializing)]
     pub wx_open_id: i32,
     pub qrcode_location_id: i32,
-    pub state: String,
+    pub state: i32,
     pub total_cost: f64,
     pub details: Vec<OrderDetail>,
 }

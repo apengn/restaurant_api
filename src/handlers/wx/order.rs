@@ -37,7 +37,7 @@ pub async fn create(
                 user_id: -1,
                 wx_open_id: user.id,
                 qrcode_location_id: new_order_params.qrcode_location_id,
-                state: "NO".to_string(),
+                state: -1,
                 total_cost,
             };
 
