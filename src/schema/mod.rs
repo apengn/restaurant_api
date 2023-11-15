@@ -86,7 +86,7 @@ diesel::table! {
         info -> Text,
         #[max_length = 11]
         phone -> Varchar,
-        localtion -> Text,
+        location -> Text,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }

@@ -3,7 +3,6 @@ use crate::handlers::restaurant::RestaurantAuthSession;
 use crate::handlers::{internal_error, Pagination, PaginationReponse};
 use crate::model::order::{Order, UpdateOrderStateParams};
 use crate::schema;
-use crate::schema::orders::dsl::orders;
 use axum::extract::{Path, Query, State};
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use diesel::prelude::*;

@@ -10,7 +10,7 @@ pub struct Restaurant {
     pub img: String,
     pub info: String,
     pub phone: String,
-    pub localtion: String,
+    pub location: String,
     #[serde(skip_deserializing)]
     pub hashed_password: String,
 }
@@ -22,7 +22,7 @@ pub struct NewRestaurant {
     pub img: String,
     pub info: String,
     pub phone: String,
-    pub localtion: String,
+    pub location: String,
     pub hashed_password: String,
 }
 
