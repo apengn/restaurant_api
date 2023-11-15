@@ -78,16 +78,15 @@ impl AuthnBackend for WXBackend {
             .await
             .map_err(Error::new)?;
 
-        let id_v: i32;
-        if wx_exists {
-            id_v = diesel::update(wx_openid.filter(openid.eq(resp.openid.clone())))
+        let id_v: i32 = if wx_exists {
+            diesel::update(wx_openid.filter(openid.eq(resp.openid.clone())))
                 .set(session_key.eq(resp.session_key.clone()))
                 .returning(id)
                 .get_result::<i32>(&mut conn)
                 .await
-                .map_err(Error::new)?;
+                .map_err(Error::new)?
         } else {
-            id_v = diesel::insert_into(wx_openid)
+            diesel::insert_into(wx_openid)
                 .values((
                     session_key.eq(resp.session_key.clone()),
                     openid.eq(resp.openid.clone()),
@@ -95,8 +94,8 @@ impl AuthnBackend for WXBackend {
                 .returning(id)
                 .get_result::<i32>(&mut conn)
                 .await
-                .map_err(Error::new)?;
-        }
+                .map_err(Error::new)?
+        };
         return Ok(Some(WXOpenid {
             openid: resp.openid,
             session_key: resp.session_key,
