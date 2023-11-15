@@ -20,15 +20,15 @@ pub async fn wx_request(
 
 async fn get_wx_access_token() {
     let mut token_url = "https://api.weixin.qq.com/cgi-bin/token".to_string();
-    token_url.push_str("?");
+    token_url.push('?');
 
     token_url.push_str("appid=");
     token_url.push_str("");
-    token_url.push_str("&");
+    token_url.push('&');
 
     token_url.push_str("secret=");
     token_url.push_str("");
-    token_url.push_str("&");
+    token_url.push('&');
 
     token_url.push_str("grant_type=");
     token_url.push_str("client_credential");

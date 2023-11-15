@@ -146,32 +146,32 @@ pub async fn wx_request(
 
 // TODO 需要写进配置文件
 fn build_jscode2session_url(jscode2session_url: &mut String) {
-    jscode2session_url.push_str("?");
+    jscode2session_url.push('?');
 
     jscode2session_url.push_str("appid=");
     jscode2session_url.push_str("appid");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 
     jscode2session_url.push_str("secret=");
     jscode2session_url.push_str("secret");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 
     jscode2session_url.push_str("grant_type=");
     jscode2session_url.push_str("authorization_code");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 }
 
 async fn get_wx_access_token() {
     let mut token_url = "https://api.weixin.qq.com/cgi-bin/token".to_string();
-    token_url.push_str("?");
+    token_url.push('?');
 
     token_url.push_str("appid=");
     token_url.push_str("appid");
-    token_url.push_str("&");
+    token_url.push('&');
 
     token_url.push_str("secret=");
     token_url.push_str("secret");
-    token_url.push_str("&");
+    token_url.push('&');
 
     token_url.push_str("grant_type=");
     token_url.push_str("client_credential");

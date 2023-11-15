@@ -5,11 +5,11 @@ use axum::extract::{Query, State};
 use axum::{http::StatusCode, Json};
 
 use crate::model::order::{Order, OrderParamsResponse};
-use crate::schema::orders::dsl::orders;
-use crate::schema::orders::wx_open_id;
+
+
 
 use crate::model::order_detail::OrderDetail;
-use crate::schema::orders_details::dsl::orders_details;
+
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 

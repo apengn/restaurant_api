@@ -123,17 +123,17 @@ type WXAuthSession = axum_login::AuthSession<WXBackend>;
 
 // TODO 需要写进配置文件
 fn build_jscode2session_url(jscode2session_url: &mut String) {
-    jscode2session_url.push_str("?");
+    jscode2session_url.push('?');
 
     jscode2session_url.push_str("appid=");
     jscode2session_url.push_str("");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 
     jscode2session_url.push_str("secret=");
     jscode2session_url.push_str("");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 
     jscode2session_url.push_str("grant_type=");
     jscode2session_url.push_str("authorization_code");
-    jscode2session_url.push_str("&");
+    jscode2session_url.push('&');
 }
