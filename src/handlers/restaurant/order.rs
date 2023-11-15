@@ -1,8 +1,9 @@
 use crate::db::Pool;
 use crate::handlers::restaurant::RestaurantAuthSession;
 use crate::handlers::{internal_error, Pagination, PaginationReponse};
-use crate::model::order::Order;
+use crate::model::order::{Order, UpdateOrderStateParams};
 use crate::schema;
+use crate::schema::orders::dsl::orders;
 use axum::extract::{Path, Query, State};
 use axum::{http::StatusCode, response::IntoResponse, Json};
 use diesel::prelude::*;
@@ -62,10 +63,31 @@ pub async fn list(
     }
 }
 
-pub async fn get(auth_session: RestaurantAuthSession) -> impl IntoResponse {
+pub async fn put(
+    auth_session: RestaurantAuthSession,
+    State(pool): State<Pool>,
+    order_state_param: Option<Query<UpdateOrderStateParams>>,
+) -> Result<(), (StatusCode, String)> {
     match auth_session.user {
-        Some(_user) => "protected".into_response(),
+        Some(user) => {
+            let mut conn = pool.get().await.map_err(internal_error)?;
 
-        None => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+            use schema::orders::dsl::*;
+            let Query(order_state_param) = order_state_param.unwrap();
+
+            diesel::update(
+                orders
+                    .filter(id.eq(order_state_param.id))
+                    .filter(restaurant_id.eq(user.id)),
+            )
+            .set(state.eq(order_state_param.state))
+            .execute(&mut conn)
+            .await
+            .map_err(internal_error)?;
+
+            Ok(())
+        }
+
+        None => Err((StatusCode::UNAUTHORIZED, "".to_string())),
     }
 }

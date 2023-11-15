@@ -61,3 +61,9 @@ pub struct OrderParamsResponse {
     pub total_cost: f64,
     pub details: Vec<OrderDetail>,
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct UpdateOrderStateParams {
+    pub id: i32,
+    pub state: i32, // 0 已下单，1 制作中，2 已买单
+}
