@@ -36,7 +36,7 @@ diesel::table! {
         user_id -> Int4,
         wx_open_id -> Int4,
         qrcode_location_id -> Int4,
-        state -> Text,
+        state -> Int4,
         total_cost -> Float8,
         created_at -> Timestamp,
         updated_at -> Timestamp,
@@ -86,7 +86,7 @@ diesel::table! {
         info -> Text,
         #[max_length = 11]
         phone -> Varchar,
-        localtion -> Text,
+        location -> Text,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }
