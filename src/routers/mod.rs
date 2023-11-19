@@ -1,7 +1,7 @@
 use axum::{
     error_handling::HandleErrorLayer,
     http::StatusCode,
-    routing::{delete, get, post},
+    routing::{delete, get, post, put},
     Router,
 };
 use axum_login::AuthManagerLayer;
@@ -18,12 +18,16 @@ use crate::{
             create as goodstype_create, delete as goodstype_delete, get as goodstype_get,
             list as goodstype_list, update as goodstype_update,
         },
+        restaurant::order::{list as order_list, put as order_update},
+        restaurant::order_detail::get as get_order_detail,
         restaurant::user::{
             login as restaurant_login, logout as restaurant_logout,
             protected as restaurant_protected, register as restaurant_register,
         },
         restaurant::RestaurantBackend,
         user::{login, logout, protected, Backend},
+        wx::order::{create as wx_create_order, list as wx_order_lis},
+        wx::order_detail::get as get_wx_order_detail,
     },
 };
 use axum::BoxError;
@@ -78,7 +82,8 @@ pub async fn router_handlers(pg_pool: Pool, addr: std::net::SocketAddr) {
         .route("/wx//post/:id", delete(delete_post).put(update_post))
         .route("/wx//login", post(login))
         .route("/wx//logout", get(logout))
-        .route("/wx//protected", get(protected))
+        .route("/wx/order", get(get_wx_order_detail).post(wx_create_order))
+        .route("/wx/orders", get(wx_order_lis))
         .layer(auth_service)
         .with_state(pg_pool.clone());
 
@@ -103,6 +108,9 @@ pub async fn router_handlers(pg_pool: Pool, addr: std::net::SocketAddr) {
             get(goods_get).delete(goods_delete).put(goods_update),
         )
         .route("/restaurant/goodsses", get(goods_list))
+        .route("/restaurant/orders", get(order_list))
+        .route("/restaurant/order/update", put(order_update))
+        .route("/restaurant/order/", get(get_order_detail))
         .layer(restaurant_auth_service)
         .with_state(pg_pool);
 

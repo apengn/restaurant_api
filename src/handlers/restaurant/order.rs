@@ -8,14 +8,6 @@ use axum::{http::StatusCode, response::IntoResponse, Json};
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 
-pub async fn create(auth_session: RestaurantAuthSession) -> impl IntoResponse {
-    match auth_session.user {
-        Some(_user) => "protected".into_response(),
-
-        None => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-    }
-}
-
 pub async fn list(
     auth_session: RestaurantAuthSession,
     State(pool): State<Pool>,
@@ -66,7 +58,7 @@ pub async fn put(
     auth_session: RestaurantAuthSession,
     State(pool): State<Pool>,
     order_state_param: Option<Query<UpdateOrderStateParams>>,
-) -> Result<(), (StatusCode, String)> {
+) -> Result<Json<()>, (StatusCode, String)> {
     match auth_session.user {
         Some(user) => {
             let mut conn = pool.get().await.map_err(internal_error)?;
@@ -84,7 +76,7 @@ pub async fn put(
             .await
             .map_err(internal_error)?;
 
-            Ok(())
+            Ok(Json(()))
         }
 
         None => Err((StatusCode::UNAUTHORIZED, "".to_string())),

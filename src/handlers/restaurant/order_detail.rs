@@ -9,14 +9,6 @@ use axum::{http::StatusCode, response::IntoResponse, Json};
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 
-pub async fn create(auth_session: RestaurantAuthSession) -> impl IntoResponse {
-    match auth_session.user {
-        Some(_user) => "protected".into_response(),
-
-        None => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-    }
-}
-
 pub async fn get(
     auth_session: RestaurantAuthSession,
     State(pool): State<Pool>,
